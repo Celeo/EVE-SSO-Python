@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EVE SSO Python Stack</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <script>
+        $(document).ready(function() {
+            $(".button-collapse").sideNav()
+            setTimeout(function() {
+                $('.flashed.disappear').fadeOut('slow')
+            }, 10000)
+        })
+    </script>
+    {% block head %}{% endblock head %}
+</head>
+<body class="grey lighten-4">
+
+<header>
+    <nav>
+        <div class="nav-wrapper cyan lighten-2">
+            <div class="container">
+                <a class="brand-logo">EVE SSO Python Stack</a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                {% if not current_user.is_anonymous %}
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('index') }}">Index</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Log out</a></li>
+                {% elif not request.endpoint == 'login' %}
+                    <li><a href="{{ url_for('login') }}">Log in</a></li>
+                {% endif %}
+                </ul>
+                <ul class="side-nav" id="mobile-demo">
+                {% if not current_user.is_anonymous %}
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('index') }}">Index</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Log out</a></li>
+                {% elif not request.endpoint == 'login' %}
+                    <li><a href="{{ url_for('login') }}">Log in</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if message %}
+                        {% if category == 'success' %}
+                            <div class="card-panel green lighten-1 flashed disappear">
+                        {% else %}
+                            <div class="card-panel red lighten-1 flashed">
+                        {% endif %}
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock content %}
+    </div>
+</main>
+
+<footer class="page-footer footer-copyright cyan lighten-2">
+    <div class="container center-align">
+        &copy; 2016 <a href="https://celeodor.com"><i>Celeodor</i></a> |
+        <a href="https://git.celeodor.com/Celeo/EVE-SSO-Python-Stack">source</a>
+    </div>
+</footer>
+
+</body>
+</html>

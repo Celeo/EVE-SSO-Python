@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h2>404 error</h2>
+
+<h5>There's nothing on the page you've reached. <a href="{{ request.referrer or '/' }}">Go back?</a></h5>
+{% endblock content %}
